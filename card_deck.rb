@@ -2,6 +2,7 @@ require_relative 'card'
 
 class CardDeck
   attr_reader :cards
+
   def initialize
     create_deck
   end
@@ -9,7 +10,15 @@ class CardDeck
   def create_deck
     @cards = []
     Card::SHAPES.each do |shape|
-      Card::VALUES.each { |value| @cards << Card.new(value: value.to_s, shape: shape) }
+      Card::NAMES.each { |name| @cards << Card.new(name: name, shape: shape) }
     end
+  end
+
+  def take_rand_card
+    cards.delete(cards.sample)
+  end
+
+  def take_ace
+    cards.delete(cards.select { |card| card.name == 'A' }.first)
   end
 end

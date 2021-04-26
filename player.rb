@@ -1,66 +1,31 @@
+require_relative 'hand'
 class Player
-  attr_reader :name, :cards
+  attr_reader :name
   attr_accessor :money
 
   def initialize(name:)
     @name = name
-    @cards = []
+    @hand = Hand.new
     @money = 100
   end
 
   def take_card(card)
-    cards << card
+    @hand.take_card(card) if @hand.can_take_card?
   end
 
   def can_take_card?
-    cards.length < 3
-  end
-
-  def score
-    case aces_count
-    when 0
-      score_without_aces
-    when 1
-      if score_without_aces > 10
-        score_without_aces + 1
-      else
-        score_without_aces + 11
-      end
-    when 2
-      if score_without_aces > 9
-        score_without_aces + 2
-      else
-        score_without_aces + 12
-      end
-    when 3
-      13
-    end
-  end
-
-  def score_without_aces
-    score = 0
-    cards.each { |card| score += card.value unless card.name == 'A' }
-    score
-  end
-
-  def card_values
-    values = []
-    cards.each { |card| values << card.value }
-    values
+    @hand.can_take_card?
   end
 
   def flush_cards
-    @cards = []
+    @hand.flush_cards
   end
 
-  private
-
-  def aces_count
-    cards.count { |card| card.name == 'A' }
+  def score
+    @hand.score
   end
 
-  # перемещает туз в конец списка карт для подсчета очков
-  def sort_cards
-    cards.sort_by! { |card| card.name == 'A' ? 1 : 0 }
+  def cards
+    @hand.cards
   end
 end

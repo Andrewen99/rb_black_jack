@@ -23,7 +23,7 @@ class Game
   end
 
   def give_card(player)
-    player.take_card(deck.take_rand_card) if player.can_take_card?
+    player.take_card(deck.take_rand_card)
   end
 
   def take_bid(amount, *players)
